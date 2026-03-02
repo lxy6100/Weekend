@@ -1,8 +1,8 @@
 :root {
-  --bg: #f7f8fb;
+  --bg: #f6f8fb;
   --card: #ffffff;
   --text: #1f2937;
-  --subtle: #6b7280;
+  --subtle: #64748b;
   --accent: #2563eb;
   --border: #d1d5db;
   --error: #b91c1c;
@@ -30,12 +30,12 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.2rem;
   border-bottom: 1px solid var(--border);
+  padding: 1rem 1.2rem;
 }
 
 .container {
-  max-width: 1080px;
+  max-width: 1100px;
   margin: 1rem auto;
   padding: 0 1rem 2rem;
 }
@@ -50,7 +50,7 @@ body {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 0.8rem;
 }
 
@@ -60,16 +60,27 @@ body {
   gap: 0.35rem;
 }
 
+.form-row.inline {
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.form-row.span-2 { grid-column: span 2; }
 .action-row { justify-content: end; }
 
-label { font-size: 0.9rem; color: var(--subtle); }
-input, button, select {
-  padding: 0.55rem 0.65rem;
+label { color: var(--subtle); font-size: 0.92rem; }
+input, select, button, textarea {
   border: 1px solid var(--border);
   border-radius: 8px;
+  padding: 0.55rem 0.65rem;
   background: transparent;
   color: var(--text);
+  font: inherit;
 }
+
+textarea { width: 100%; }
 
 button {
   cursor: pointer;
@@ -84,11 +95,7 @@ button.secondary {
   border-color: var(--border);
 }
 
-.result { font-weight: 600; }
-.error { color: var(--error); min-height: 1.2em; }
-.hint { color: var(--subtle); min-height: 1.2em; }
-.table-wrap { overflow-x: auto; margin-top: 0.6rem; }
-
+.table-wrap { overflow-x: auto; margin-top: 0.5rem; }
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -97,18 +104,23 @@ button.secondary {
 .table th, .table td {
   border: 1px solid var(--border);
   padding: 0.45rem;
-  text-align: left;
   vertical-align: top;
+  text-align: left;
 }
 .table details summary { cursor: pointer; color: var(--accent); }
 
+.result { font-weight: 600; }
+.result-block { line-height: 1.7; }
+.error { color: var(--error); min-height: 1.2em; }
+.hint { color: var(--subtle); min-height: 1.2em; }
 .selftest {
   white-space: pre-wrap;
   background: rgba(127, 127, 127, 0.1);
-  padding: 0.8rem;
   border-radius: 8px;
+  padding: 0.8rem;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 720px) {
   .app-header { flex-direction: column; gap: 0.6rem; }
+  .form-row.span-2 { grid-column: auto; }
 }
