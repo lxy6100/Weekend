@@ -15,9 +15,11 @@
     <main class="container">
       <section class="panel">
         <h2>1) 单个日期判定</h2>
-        <div class="form-row inline">
-          <label for="singleDate">日期 (YYYY-MM-DD)</label>
-          <input id="singleDate" type="text" placeholder="例如 2026-03-02" />
+        <div class="form-row inline date-row">
+          <label>日期 (年 / 月 / 日)</label>
+          <input id="singleYear" type="number" placeholder="2026" min="1" />
+          <input id="singleMonth" type="number" placeholder="3" min="1" max="12" />
+          <input id="singleDay" type="number" placeholder="2" min="1" max="31" />
           <button id="singleCalc">计算</button>
         </div>
         <div id="singleResult" class="result-block"></div>
@@ -27,8 +29,11 @@
         <h2>2) 未来 N 年该月日是周几</h2>
         <div class="grid">
           <div class="form-row">
-            <label for="mdInput">月日 (MM-DD)</label>
-            <input id="mdInput" type="text" placeholder="例如 03-01" />
+            <label>月日 (月 / 日)</label>
+            <div class="split-2">
+              <input id="mdMonth" type="number" placeholder="3" min="1" max="12" />
+              <input id="mdDay" type="number" placeholder="1" min="1" max="31" />
+            </div>
           </div>
           <div class="form-row">
             <label for="nYears">未来 N 年 (1-50)</label>
@@ -51,12 +56,18 @@
         <h2>3) 月日区间：概率排行</h2>
         <div class="grid">
           <div class="form-row">
-            <label for="rangeStart">起点 (MM-DD)</label>
-            <input id="rangeStart" type="text" placeholder="例如 03-01" />
+            <label>起点 (月 / 日)</label>
+            <div class="split-2">
+              <input id="rangeStartMonth" type="number" placeholder="3" min="1" max="12" />
+              <input id="rangeStartDay" type="number" placeholder="1" min="1" max="31" />
+            </div>
           </div>
           <div class="form-row">
-            <label for="rangeEnd">终点 (MM-DD)</label>
-            <input id="rangeEnd" type="text" placeholder="例如 04-01" />
+            <label>终点 (月 / 日)</label>
+            <div class="split-2">
+              <input id="rangeEndMonth" type="number" placeholder="4" min="1" max="12" />
+              <input id="rangeEndDay" type="number" placeholder="1" min="1" max="31" />
+            </div>
           </div>
           <div class="form-row">
             <label for="rangeYears">未来 N 年 (1-50)</label>

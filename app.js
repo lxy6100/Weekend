@@ -62,6 +62,29 @@
     return { m: mo, d };
   }
 
+  function parsePositiveInt(v) {
+    const n = Number(v);
+    return Number.isInteger(n) && n > 0 ? n : null;
+  }
+
+  function readMDFromInputs(monthId, dayId) {
+    const m = parsePositiveInt(document.getElementById(monthId).value);
+    const d = parsePositiveInt(document.getElementById(dayId).value);
+    if (!m || !d) return null;
+    if (m < 1 || m > 12) return null;
+    if (m === 2 && d === 29) return { m, d };
+    if (d > daysInMonth(2023, m)) return null;
+    return { m, d };
+  }
+
+  function readYMDFromInputs(yearId, monthId, dayId) {
+    const y = parsePositiveInt(document.getElementById(yearId).value);
+    const m = parsePositiveInt(document.getElementById(monthId).value);
+    const d = parsePositiveInt(document.getElementById(dayId).value);
+    if (!y || !m || !d) return null;
+    return isValidDate(y, m, d) ? { y, m, d } : null;
+  }
+
   function clampNYears(v) {
     if (!Number.isFinite(v)) return 5;
     return Math.max(1, Math.min(50, Math.floor(v)));
@@ -355,9 +378,18 @@
   }
 
   const currentYear = new Date().getFullYear();
+  document.getElementById('singleYear').value = currentYear;
   document.getElementById('startYear').value = currentYear;
   document.getElementById('rangeStartYear').value = currentYear;
   document.getElementById('calendarJson').value = JSON.stringify(sampleCalendar2026, null, 2);
+  document.getElementById('singleMonth').value = 3;
+  document.getElementById('singleDay').value = 2;
+  document.getElementById('mdMonth').value = 3;
+  document.getElementById('mdDay').value = 1;
+  document.getElementById('rangeStartMonth').value = 3;
+  document.getElementById('rangeStartDay').value = 1;
+  document.getElementById('rangeEndMonth').value = 4;
+  document.getElementById('rangeEndDay').value = 1;
 
   let mdRowsCache = [];
   let mdHeadersCache = [];
@@ -366,9 +398,9 @@
 
   document.getElementById('singleCalc').addEventListener('click', () => {
     const out = document.getElementById('singleResult');
-    const parsed = parseYMD(document.getElementById('singleDate').value);
+    const parsed = readYMDFromInputs('singleYear', 'singleMonth', 'singleDay');
     if (!parsed) {
-      out.textContent = '输入无效：请使用合法 YYYY-MM-DD。';
+      out.textContent = '输入无效：请填写合法 年/月/日（月份和日期可填 3 或 03）。';
       return;
     }
     const wd = weekday(parsed.y, parsed.m, parsed.d);
@@ -384,7 +416,7 @@
   });
 
   document.getElementById('mdCalc').addEventListener('click', () => {
-    const md = parseMD(document.getElementById('mdInput').value);
+    const md = readMDFromInputs('mdMonth', 'mdDay');
     const n = clampNYears(Number(document.getElementById('nYears').value));
     const startYear = Math.floor(Number(document.getElementById('startYear').value));
     const err = document.getElementById('mdError');
@@ -392,7 +424,7 @@
     err.textContent = '';
     wrap.innerHTML = '';
     if (!md) {
-      err.textContent = '月日无效，请输入合法 MM-DD（02-29 允许）。';
+      err.textContent = '月日无效：请填写合法 月/日（支持 3 或 03；02-29 允许）。';
       return;
     }
     if (!Number.isInteger(startYear) || startYear < 1) {
@@ -444,8 +476,8 @@
   }
 
   document.getElementById('rangeCalc').addEventListener('click', () => {
-    const s = parseMD(document.getElementById('rangeStart').value);
-    const e = parseMD(document.getElementById('rangeEnd').value);
+    const s = readMDFromInputs('rangeStartMonth', 'rangeStartDay');
+    const e = readMDFromInputs('rangeEndMonth', 'rangeEndDay');
     const n = clampNYears(Number(document.getElementById('rangeYears').value));
     const startYear = Math.floor(Number(document.getElementById('rangeStartYear').value));
     const metric = document.getElementById('rankMetric').value;

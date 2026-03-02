@@ -70,6 +70,14 @@ body {
 .form-row.span-2 { grid-column: span 2; }
 .action-row { justify-content: end; }
 
+.split-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.date-row input { width: 8.5rem; }
+
 label { color: var(--subtle); font-size: 0.92rem; }
 input, select, button, textarea {
   border: 1px solid var(--border);
