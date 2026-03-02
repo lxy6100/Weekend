@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>日期星期与未来多年周末/节假日概率排行</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>日期星期与未来多年周末/节假日概率排行</h1>
+      <button id="themeToggle" class="secondary">切换深浅色</button>
+    </header>
+
+    <main class="container">
+      <section class="panel">
+        <h2>1) 单个日期判定</h2>
+        <div class="form-row inline">
+          <label for="singleDate">日期 (YYYY-MM-DD)</label>
+          <input id="singleDate" type="text" placeholder="例如 2026-03-02" />
+          <button id="singleCalc">计算</button>
+        </div>
+        <div id="singleResult" class="result-block"></div>
+      </section>
+
+      <section class="panel">
+        <h2>2) 未来 N 年该月日是周几</h2>
+        <div class="grid">
+          <div class="form-row">
+            <label for="mdInput">月日 (MM-DD)</label>
+            <input id="mdInput" type="text" placeholder="例如 03-01" />
+          </div>
+          <div class="form-row">
+            <label for="nYears">未来 N 年 (1-50)</label>
+            <input id="nYears" type="number" min="1" max="50" value="5" />
+          </div>
+          <div class="form-row">
+            <label for="startYear">起始年份</label>
+            <input id="startYear" type="number" />
+          </div>
+          <div class="form-row action-row">
+            <button id="mdCalc">生成表格</button>
+            <button id="copyMdTable" class="secondary">复制 TSV</button>
+          </div>
+        </div>
+        <p id="mdError" class="error"></p>
+        <div id="mdTableWrap" class="table-wrap"></div>
+      </section>
+
+      <section class="panel">
+        <h2>3) 月日区间：概率排行</h2>
+        <div class="grid">
+          <div class="form-row">
+            <label for="rangeStart">起点 (MM-DD)</label>
+            <input id="rangeStart" type="text" placeholder="例如 03-01" />
+          </div>
+          <div class="form-row">
+            <label for="rangeEnd">终点 (MM-DD)</label>
+            <input id="rangeEnd" type="text" placeholder="例如 04-01" />
+          </div>
+          <div class="form-row">
+            <label for="rangeYears">未来 N 年 (1-50)</label>
+            <input id="rangeYears" type="number" min="1" max="50" value="5" />
+          </div>
+          <div class="form-row">
+            <label for="rangeStartYear">起始年份</label>
+            <input id="rangeStartYear" type="number" />
+          </div>
+          <div class="form-row">
+            <label for="rankMetric">排行维度</label>
+            <select id="rankMetric"></select>
+          </div>
+          <div class="form-row">
+            <label for="rankFilter">按月日过滤</label>
+            <input id="rankFilter" type="text" placeholder="例如 03-" />
+          </div>
+          <div class="form-row">
+            <label for="topK">显示条数</label>
+            <select id="topK">
+              <option value="20" selected>Top 20</option>
+              <option value="10">Top 10</option>
+              <option value="50">Top 50</option>
+              <option value="all">全部</option>
+            </select>
+          </div>
+          <div class="form-row action-row">
+            <button id="rangeCalc">计算排行</button>
+            <button id="copyRangeTable" class="secondary">复制 TSV</button>
+          </div>
+        </div>
+        <p id="rangeHint" class="hint"></p>
+        <p id="rangeError" class="error"></p>
+        <p id="overallRatio" class="result"></p>
+        <div id="rangeTableWrap" class="table-wrap"></div>
+      </section>
+
+      <section class="panel">
+        <h2>4) 节假日放假概率（中国口径）</h2>
+        <div class="form-row inline">
+          <label>模式切换</label>
+          <label><input type="radio" name="holidayMode" value="rule" checked />规则模式（可预测，不含调休）</label>
+          <label><input type="radio" name="holidayMode" value="calendar" />日历模式（最真实，需 off/work）</label>
+        </div>
+        <p class="hint" id="modeHint"></p>
+        <div class="grid">
+          <div class="form-row span-2">
+            <label for="calendarJson">日历模式 JSON（可粘贴；或上传文件）</label>
+            <textarea id="calendarJson" rows="10"></textarea>
+          </div>
+          <div class="form-row">
+            <label for="calendarFile">上传 JSON 文件</label>
+            <input id="calendarFile" type="file" accept="application/json,.json" />
+          </div>
+          <div class="form-row action-row">
+            <button id="loadCalendar">加载/解析 JSON</button>
+            <button id="useSampleJson" class="secondary">填入 2026 示例</button>
+          </div>
+        </div>
+        <p id="calendarStatus" class="result"></p>
+        <p id="calendarError" class="error"></p>
+      </section>
+
+      <section class="panel">
+        <h2>5) 准确性自检</h2>
+        <p>包含 weekday、农历春节识别、日历模式 off/work 判定三类测试。</p>
+        <button id="runSelfTest">运行自检</button>
+        <pre id="selfTestOutput" class="selftest"></pre>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
