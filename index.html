@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>日期星期与未来多年周末概率排行</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>日期星期与未来多年周末概率排行</h1>
+      <button id="themeToggle" class="secondary">切换深浅色</button>
+    </header>
+
+    <main class="container">
+      <section class="panel">
+        <h2>1) 单个日期是周几</h2>
+        <div class="form-row">
+          <label for="singleDate">日期 (YYYY-MM-DD)</label>
+          <input id="singleDate" type="text" placeholder="例如 2026-03-02" />
+          <button id="singleCalc">计算</button>
+        </div>
+        <p id="singleResult" class="result"></p>
+      </section>
+
+      <section class="panel">
+        <h2>2) 未来 N 年该月日是周几</h2>
+        <div class="grid">
+          <div class="form-row">
+            <label for="mdInput">月日 (MM-DD)</label>
+            <input id="mdInput" type="text" placeholder="例如 03-01" />
+          </div>
+          <div class="form-row">
+            <label for="nYears">未来 N 年 (1-50)</label>
+            <input id="nYears" type="number" min="1" max="50" value="5" />
+          </div>
+          <div class="form-row">
+            <label for="startYear">起始年份</label>
+            <input id="startYear" type="number" />
+          </div>
+          <div class="form-row action-row">
+            <button id="mdCalc">生成表格</button>
+            <button id="copyMdTable" class="secondary">复制 TSV</button>
+          </div>
+        </div>
+        <p id="mdError" class="error"></p>
+        <div id="mdTableWrap" class="table-wrap"></div>
+      </section>
+
+      <section class="panel">
+        <h2>3) 月日区间：周末概率排行</h2>
+        <div class="grid">
+          <div class="form-row">
+            <label for="rangeStart">起点 (MM-DD)</label>
+            <input id="rangeStart" type="text" placeholder="例如 03-01" />
+          </div>
+          <div class="form-row">
+            <label for="rangeEnd">终点 (MM-DD)</label>
+            <input id="rangeEnd" type="text" placeholder="例如 04-01" />
+          </div>
+          <div class="form-row">
+            <label for="rangeYears">未来 N 年 (1-50)</label>
+            <input id="rangeYears" type="number" min="1" max="50" value="5" />
+          </div>
+          <div class="form-row">
+            <label for="rangeStartYear">起始年份</label>
+            <input id="rangeStartYear" type="number" />
+          </div>
+          <div class="form-row">
+            <label for="rankFilter">按月日过滤</label>
+            <input id="rankFilter" type="text" placeholder="例如 03-" />
+          </div>
+          <div class="form-row">
+            <label for="topK">显示条数</label>
+            <select id="topK">
+              <option value="20" selected>Top 20</option>
+              <option value="10">Top 10</option>
+              <option value="50">Top 50</option>
+              <option value="all">全部</option>
+            </select>
+          </div>
+          <div class="form-row action-row">
+            <button id="rangeCalc">计算排行</button>
+            <button id="copyRangeTable" class="secondary">复制 TSV</button>
+          </div>
+        </div>
+        <p id="rangeHint" class="hint"></p>
+        <p id="rangeError" class="error"></p>
+        <p id="overallRatio" class="result"></p>
+        <div id="rangeTableWrap" class="table-wrap"></div>
+      </section>
+
+      <section class="panel">
+        <h2>4) 准确性自检</h2>
+        <p>内置 10+ 条已知日期校验 weekday 算法准确性。</p>
+        <button id="runSelfTest">运行自检</button>
+        <pre id="selfTestOutput" class="selftest"></pre>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
