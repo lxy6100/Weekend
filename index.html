@@ -131,8 +131,31 @@
         <p id="calendarError" class="error"></p>
       </section>
 
+
       <section class="panel">
-        <h2>5) 准确性自检</h2>
+        <h2>5) 日期计算（纪念日 / N 天后）</h2>
+        <div class="grid">
+          <div class="form-row">
+            <label>起始日期 (年 / 月 / 日)</label>
+            <div class="split-3">
+              <input id="anniversaryYear" type="number" placeholder="2026" min="1" />
+              <input id="anniversaryMonth" type="number" placeholder="3" min="1" max="12" />
+              <input id="anniversaryDay" type="number" placeholder="2" min="1" max="31" />
+            </div>
+          </div>
+          <div class="form-row">
+            <label for="anniversaryOffset">相隔天数（可负数）</label>
+            <input id="anniversaryOffset" type="number" placeholder="100" />
+          </div>
+          <div class="form-row action-row">
+            <button id="anniversaryCalc">计算目标日期</button>
+          </div>
+        </div>
+        <p id="anniversaryError" class="error"></p>
+        <div id="anniversaryResult" class="result-block"></div>
+      </section>
+      <section class="panel">
+        <h2>6) 准确性自检</h2>
         <p>包含 weekday、农历春节识别、日历模式 off/work 判定三类测试。</p>
         <button id="runSelfTest">运行自检</button>
         <pre id="selfTestOutput" class="selftest"></pre>

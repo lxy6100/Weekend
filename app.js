@@ -85,6 +85,16 @@
     return isValidDate(y, m, d) ? { y, m, d } : null;
   }
 
+  function addDaysUTC(y, m, d, offsetDays) {
+    const utcMs = Date.UTC(y, m - 1, d) + offsetDays * 24 * 60 * 60 * 1000;
+    const dt = new Date(utcMs);
+    return {
+      y: dt.getUTCFullYear(),
+      m: dt.getUTCMonth() + 1,
+      d: dt.getUTCDate(),
+    };
+  }
+
   function clampNYears(v) {
     if (!Number.isFinite(v)) return 5;
     return Math.max(1, Math.min(50, Math.floor(v)));
@@ -390,6 +400,10 @@
   document.getElementById('rangeStartDay').value = 1;
   document.getElementById('rangeEndMonth').value = 4;
   document.getElementById('rangeEndDay').value = 1;
+  document.getElementById('anniversaryYear').value = currentYear;
+  document.getElementById('anniversaryMonth').value = 3;
+  document.getElementById('anniversaryDay').value = 2;
+  document.getElementById('anniversaryOffset').value = 100;
 
   let mdRowsCache = [];
   let mdHeadersCache = [];
@@ -554,6 +568,34 @@
     }
   });
 
+
+  document.getElementById('anniversaryCalc').addEventListener('click', () => {
+    const err = document.getElementById('anniversaryError');
+    const out = document.getElementById('anniversaryResult');
+    err.textContent = '';
+    out.textContent = '';
+
+    const start = readYMDFromInputs('anniversaryYear', 'anniversaryMonth', 'anniversaryDay');
+    const offset = Number(document.getElementById('anniversaryOffset').value);
+
+    if (!start) {
+      err.textContent = '起始日期无效，请填写合法 年/月/日。';
+      return;
+    }
+    if (!Number.isInteger(offset)) {
+      err.textContent = '相隔天数必须是整数（可为负数）。';
+      return;
+    }
+
+    const target = addDaysUTC(start.y, start.m, start.d, offset);
+    const wd = weekday(target.y, target.m, target.d);
+    out.innerHTML = [
+      `起始日期：${formatYMD(start.y, start.m, start.d)}`,
+      `相隔天数：${offset >= 0 ? '+' : ''}${offset} 天`,
+      `目标日期：${formatYMD(target.y, target.m, target.d)} (${WEEKDAY_ZH[wd]} / ${WEEKDAY_EN[wd]})`
+    ].join('<br>');
+  });
+
   document.getElementById('runSelfTest').addEventListener('click', () => {
     const output = document.getElementById('selfTestOutput');
     const failures = [];
@@ -570,6 +612,9 @@
         if (got !== expected) failures.push(`${date} weekday 期望 ${expected} 实际 ${got}`);
       }
     });
+
+    const plus100 = addDaysUTC(2026, 3, 2, 100);
+    if (!(plus100.y === 2026 && plus100.m === 6 && plus100.d === 10)) failures.push('2026-03-02 +100 天应为 2026-06-10');
 
     const cny = isRuleHoliday(2024, 2, 10);
     if (!cny.hit) failures.push('2024-02-10 应判定为春节（农历正月初一）');

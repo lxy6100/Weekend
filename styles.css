@@ -76,6 +76,12 @@ body {
   gap: 0.5rem;
 }
 
+.split-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
 .date-row input { width: 8.5rem; }
 
 label { color: var(--subtle); font-size: 0.92rem; }
